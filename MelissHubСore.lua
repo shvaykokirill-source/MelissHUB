@@ -9,13 +9,23 @@ local CoreGui = game:GetService("CoreGui")
 -- 1. Загрузка хаба
 loadstring(game:HttpGet(HUB_URL))()
 
--- 2. Ждём прогрузки
-task.wait(0.1)
+-- 2. Ждём появления GUI — проверяем каждые 0.1 сек, макс 30 сек
+local gui
+for i = 1, 300 do
+    gui = CoreGui:FindFirstChild("KitagawaHub_V8")
+    if gui then break end
+    task.wait(0.1)
+end
 
--- 3. Подмена названий
+if not gui then
+    warn("[MelissHub] Хаб не появился за 30 секунд")
+    return
+end
+
+-- 3. Подмена названий сразу после появления
 task.spawn(function()
-    while true do
-        for _, v in pairs(CoreGui:GetDescendants()) do
+    while gui and gui.Parent do
+        for _, v in pairs(gui:GetDescendants()) do
             if v:IsA("TextLabel") then
                 if v.Text == "KitagawaHub" then
                     v.Text = hubName
@@ -28,6 +38,8 @@ task.spawn(function()
                 end
             end
         end
-        task.wait(1)
+        task.wait(0.2)
     end
 end)
+
+print("[MelissHub] Ядро загружено")
