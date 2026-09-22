@@ -10,7 +10,7 @@ local CoreGui = game:GetService("CoreGui")
 loadstring(game:HttpGet(HUB_URL))()
 
 -- 2. Ждём прогрузки
-task.wait(5)
+task.wait(0.1)
 
 -- 3. Подмена названий
 task.spawn(function()
